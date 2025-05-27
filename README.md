@@ -50,6 +50,49 @@ yarn dev
 5. Escribe tu contenido en Markdown en el editor
 6. Haz clic en "Convertir a PDF" para generar el documento
 
+## Uso desde la Línea de Comandos
+
+Puedes convertir documentos Markdown a PDF directamente desde la línea de comandos usando curl:
+
+```bash
+# Ejemplo básico
+curl -X POST https://markdown-to-pdf.taptapp.xyz/api/markdown-to-pdf \
+  -H "Content-Type: application/json" \
+  -d "{\"markdown\":\"# Título\\n\\nEste es un párrafo de ejemplo.\"}" \
+  --output documento.pdf
+
+# Ejemplo con un archivo Markdown
+curl -X POST https://markdown-to-pdf.taptapp.xyz/api/markdown-to-pdf \
+  -H "Content-Type: application/json" \
+  -d @documento.md \
+  --output documento.pdf
+```
+
+Para Windows (PowerShell):
+
+```powershell
+# Ejemplo básico
+$markdown = @{
+    markdown = "# Título`n`nEste es un párrafo de ejemplo."
+} | ConvertTo-Json
+
+Invoke-RestMethod -Method Post -Uri "https://markdown-to-pdf.taptapp.xyz/api/markdown-to-pdf" `
+    -ContentType "application/json" `
+    -Body $markdown `
+    -OutFile "documento.pdf"
+
+# Ejemplo con un archivo Markdown
+$markdown = Get-Content -Path "documento.md" -Raw
+$body = @{
+    markdown = $markdown
+} | ConvertTo-Json
+
+Invoke-RestMethod -Method Post -Uri "https://markdown-to-pdf.taptapp.xyz/api/markdown-to-pdf" `
+    -ContentType "application/json" `
+    -Body $body `
+    -OutFile "documento.pdf"
+```
+
 ## Estructura del Proyecto
 
 - `src/app/page.tsx` - Interfaz de usuario principal
