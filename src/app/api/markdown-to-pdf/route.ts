@@ -4,9 +4,9 @@ import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium-min";
 import { NextRequest, NextResponse } from "next/server";
 
-// Estilos CSS para un documento PDF de alta calidad profesional
+// Estilos CSS para un documento PDF de nivel directivo, ultra-profesional
 const getStyles = () => `
-  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;500;600&display=swap');
 
   :root {
     /* Core Typography */
@@ -14,23 +14,23 @@ const getStyles = () => `
     --font-heading: 'Merriweather', Georgia, serif;
     --font-code: 'Source Code Pro', Menlo, Monaco, Consolas, "Courier New", monospace;
 
-    /* Refined Color Palette (Corporate & Elegant) */
-    --color-text-primary: #1A202C; /* Very Dark Blue/Gray (almost black) */
-    --color-text-secondary: #4A5568; /* Dark Gray */
-    --color-text-muted: #718096; /* Medium Gray */
-    --color-accent: #2B6CB0; /* Corporate Blue */
-    --color-accent-hover: #255790; /* Darker blue for hover/active states */
-    --color-accent-light: #EBF4FF; /* Very Light Blue (backgrounds) */
+    /* Refined Color Palette - Sophisticated & Modern Corporate */
+    --color-text-primary: #121826;     /* Deep Indigo/Almost Black */
+    --color-text-secondary: #374151; /* Dark Cool Gray */
+    --color-text-muted: #6B7280;    /* Medium Cool Gray */
+    --color-accent: #3182CE;        /* Vibrant yet Professional Blue (Tailwind Blue 600) */
+    --color-accent-hover: #2B6CB0;    /* Darker Blue (Tailwind Blue 700) */
+    --color-accent-light: #EBF8FF;    /* Very Light Blue (Tailwind Blue 100, adjusted) */
     --color-background-body: #FFFFFF;
-    --color-background-code: #F7FAFC; /* Light Gray for code blocks */
-    --color-border-light: #E2E8F0; /* Light Gray Border */
-    --color-border-medium: #CBD5E0; /* Medium Gray Border */
+    --color-background-code: #F3F4F6; /* Lightest Cool Gray (Tailwind Gray 100) */
+    --color-border-light: #D1D5DB;  /* Light Gray Border (Tailwind Gray 300) */
+    --color-border-medium: #9CA3AF; /* Medium Gray Border (Tailwind Gray 400) */
 
     /* Sizing & Spacing */
-    --base-font-size: 11pt; /* Optimal for readability in documents */
-    --base-line-height: 1.65;
-    --spacing-unit: 1rem; /* Relative unit, 1rem = --base-font-size */
-    --border-radius: 4px; /* Subtle rounded corners */
+    --base-font-size: 11pt;
+    --base-line-height: 1.7; /* Increased for body text readability */
+    --spacing-unit: 1rem; /* Approx 11pt or 14.6px, adjust based on final base-font-size px */
+    --border-radius: 3px; /* Subtle rounded corners for a softer, modern look */
   }
 
   *, *::before, *::after {
@@ -44,6 +44,9 @@ const getStyles = () => `
     print-color-adjust: exact;
     text-rendering: optimizeLegibility;
     font-variant-ligatures: common-ligatures;
+    -moz-font-feature-settings: "liga" on, "clig" on;
+    -webkit-font-feature-settings: "liga" on, "clig" on;
+    font-feature-settings: "liga" on, "clig" on;
   }
 
   body {
@@ -51,298 +54,298 @@ const getStyles = () => `
     color: var(--color-text-primary);
     background-color: var(--color-background-body);
     margin: 0;
-    /* Generous padding acts as page margins since Puppeteer margins might be 0 */
-    padding: 20mm 25mm;
+    padding: 20mm 25mm; /* Page margins defined by body padding */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Headings - Clear Hierarchy & Elegant Spacing */
+  /* Headings - Refined Hierarchy & Spacing */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     color: var(--color-text-primary);
     margin-top: calc(var(--spacing-unit) * 2.8);
     margin-bottom: calc(var(--spacing-unit) * 1);
-    line-height: 1.3;
-    font-weight: 700;
+    line-height: 1.25; /* Tighter line height for headings */
   }
 
-  h1 {
-    font-size: 2.75rem; /* Slightly reduced for balance */
+  h1 { /* Improvement 1 */
+    font-size: 2.6rem;
     font-weight: 900;
     margin-top: 0;
-    margin-bottom: calc(var(--spacing-unit) * 1.8);
-    padding-bottom: calc(var(--spacing-unit) * 0.8);
-    border-bottom: 3px solid var(--color-accent);
-    letter-spacing: -0.03em;
+    margin-bottom: calc(var(--spacing-unit) * 2); /* More space after H1 */
+    padding-bottom: calc(var(--spacing-unit) * 0.7);
+    border-bottom: 2px solid var(--color-accent); /* Improvement 21 */
+    letter-spacing: -0.035em;
   }
 
-  h2 {
-    font-size: 2rem;
-    margin-top: calc(var(--spacing-unit) * 3.2);
-    padding-bottom: calc(var(--spacing-unit) * 0.6);
-    border-bottom: 1px solid var(--color-border-medium);
-    letter-spacing: -0.02em;
-  }
-
-  h3 {
-    font-size: 1.6rem;
+  h2 { /* Improvement 2 */
+    font-size: 1.9rem; /* Slightly smaller for better scale */
     font-weight: 700;
-    margin-top: calc(var(--spacing-unit) * 2.5);
-    color: var(--color-text-primary); /* Slightly darker than secondary */
-    letter-spacing: -0.01em;
+    margin-top: calc(var(--spacing-unit) * 3.5); /* More top margin */
+    margin-bottom: calc(var(--spacing-unit) * 1.2); /* Improvement 2 */
+    padding-bottom: 0; /* No border for H2, rely on space */
+    border-bottom: none; /* Improvement 22 */
+    letter-spacing: -0.025em;
   }
 
-  h4 {
-    font-size: 1.25rem;
-    font-weight: 700; /* Bold for clear sub-sectioning */
-    font-family: var(--font-body); /* Sans-serif for H4 for variety */
+  h3 { /* Improvement 3 */
+    font-size: 1.5rem;
+    font-weight: 600; /* Semi-bold */
+    margin-top: calc(var(--spacing-unit) * 2.6);
+    color: var(--color-text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  h4 { /* Improvement 31 */
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: var(--font-heading); /* Keep heading font for consistency */
     color: var(--color-text-secondary);
-    margin-top: calc(var(--spacing-unit) * 2.2);
-    margin-bottom: calc(var(--spacing-unit) * 0.8);
+    margin-top: calc(var(--spacing-unit) * 2.3);
+    margin-bottom: calc(var(--spacing-unit) * 0.7);
   }
 
-  h5 {
-    font-size: 1.05rem;
+  h5 { /* Improvement 10 */
+    font-size: 1.0rem;
     font-weight: 700;
     font-family: var(--font-body);
     color: var(--color-text-secondary);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-top: calc(var(--spacing-unit) * 2);
+    letter-spacing: 0.075em;
+    margin-top: calc(var(--spacing-unit) * 2.1);
     margin-bottom: calc(var(--spacing-unit) * 0.6);
   }
 
   h6 {
-    font-size: 1rem;
-    font-weight: 400; /* Normal weight for subtle headings */
+    font-size: 0.95rem;
+    font-weight: 500; /* Medium weight */
     font-family: var(--font-body);
     font-style: italic;
     color: var(--color-text-muted);
-    margin-top: calc(var(--spacing-unit) * 1.8);
+    margin-top: calc(var(--spacing-unit) * 1.9);
     margin-bottom: calc(var(--spacing-unit) * 0.5);
   }
 
-  /* Paragraphs - Justified for formal look, good leading */
-  p {
+  /* Paragraphs */
+  p { /* Improvement 4 */
     margin-top: 0;
-    margin-bottom: calc(var(--spacing-unit) * 1.1);
+    margin-bottom: calc(var(--spacing-unit) * 1.0);
     text-align: justify;
     hyphens: auto;
-    font-size: 1rem; /* Relative to body's 11pt */
-    line-height: var(--base-line-height);
+    font-size: 1rem;
+    line-height: 1.75; /* Optimal for justified text */
   }
   p:last-child { margin-bottom: 0; }
 
-  /* Links - Clear, accessible, and subtly styled */
-  a {
+  /* Links */
+  a { /* Improvement 5 */
     color: var(--color-accent);
     text-decoration: none;
-    font-weight: 600; /* Semi-bold for emphasis */
-    border-bottom: 1px solid transparent; /* Prepare for hover effect */
-    transition: color 0.2s ease, border-bottom-color 0.2s ease;
+    font-weight: 600;
+    border-bottom: 1px dotted var(--color-accent-light); /* Subtle dotted underline */
+    transition: color 0.2s ease, border-bottom-color 0.2s ease, border-bottom-style 0.2s ease;
   }
   a:hover, a:focus {
     color: var(--color-accent-hover);
     border-bottom-color: var(--color-accent-hover);
+    border-bottom-style: solid; /* Solid on hover */
   }
 
-  /* Lists - Clean, well-spaced, and professional markers */
-  ul, ol {
-    margin-top: calc(var(--spacing-unit) * 0.5);
-    margin-bottom: calc(var(--spacing-unit) * 1.1);
-    padding-left: calc(var(--spacing-unit) * 1.8); /* Indentation */
+  /* Lists */
+  ul, ol { /* Improvement 12 */
+    margin-top: calc(var(--spacing-unit) * 0.6);
+    margin-bottom: calc(var(--spacing-unit) * 1.0);
+    padding-left: calc(var(--spacing-unit) * 2.2);
   }
-  ul ul, ol ol, ul ol, ol ul {
-    margin-top: calc(var(--spacing-unit) * 0.3);
-    margin-bottom: calc(var(--spacing-unit) * 0.3);
-    padding-left: calc(var(--spacing-unit) * 1.5);
+  ul ul, ol ol, ul ol, ol ul { /* Improvement 27 */
+    margin-top: calc(var(--spacing-unit) * 0.25);
+    margin-bottom: calc(var(--spacing-unit) * 0.25);
+    padding-left: calc(var(--spacing-unit) * 1.6);
   }
-  li {
-    margin-bottom: calc(var(--spacing-unit) * 0.45);
-    padding-left: calc(var(--spacing-unit) * 0.3);
-    line-height: 1.6;
+  li { /* Improvement 13 */
+    margin-bottom: calc(var(--spacing-unit) * 0.35);
+    padding-left: calc(var(--spacing-unit) * 0.25);
+    line-height: 1.65;
   }
   ul { list-style-type: none; }
-  ul li::before {
-    content: "–"; /* Em dash for a sophisticated bullet */
+  ul li::before { /* Improvement 26 */
+    content: "•";
     color: var(--color-accent);
+    font-size: 0.8em; /* Smaller bullet */
     font-weight: bold;
     display: inline-block;
     width: 1em;
-    margin-left: -1.2em; /* Fine-tuned alignment */
+    margin-left: -1.35em; /* Adjusted for smaller bullet */
+    vertical-align: 0.1em; /* Fine-tune vertical alignment */
   }
   ol { list-style-position: outside; }
 
-  /* Blockquotes - Visually distinct and elegant */
-  blockquote {
-    margin: calc(var(--spacing-unit) * 2.2) 0;
-    padding: calc(var(--spacing-unit) * 1.2) calc(var(--spacing-unit) * 1.8);
-    border-left: 4px solid var(--color-accent);
+  /* Blockquotes */
+  blockquote { /* Improvement 25 */
+    margin: calc(var(--spacing-unit) * 2.0) 0;
+    padding: calc(var(--spacing-unit) * 1.1) calc(var(--spacing-unit) * 1.6);
+    border-left: 3px solid var(--color-accent);
     background-color: var(--color-accent-light);
     color: var(--color-text-secondary);
     border-radius: var(--border-radius);
     font-style: italic;
   }
-  blockquote p {
-    font-size: 1.02rem; /* Slightly larger for emphasis */
-    line-height: 1.6;
-    margin-bottom: calc(var(--spacing-unit) * 0.8);
-    text-align: left; /* Override justify for quotes if desired */
+  blockquote p { /* Improvement 8 */
+    font-size: 1rem; /* Same as body */
+    line-height: 1.65;
+    margin-bottom: calc(var(--spacing-unit) * 0.7);
+    text-align: left;
     hyphens: none;
   }
   blockquote p:last-child { margin-bottom: 0; }
   blockquote footer, blockquote cite {
     font-style: normal;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--color-text-muted);
     display: block;
-    margin-top: var(--spacing-unit);
+    margin-top: calc(var(--spacing-unit) * 0.9);
     text-align: right;
   }
 
-  /* Code Blocks - Clean, readable, and professional */
-  code { /* Inline code */
+  /* Code */
+  code { /* Inline code - Improvement 6 */
     font-family: var(--font-code);
-    background-color: var(--color-background-code);
-    color: var(--color-text-primary); /* Darker for better contrast on light bg */
-    padding: 0.2em 0.45em;
+    background-color: var(--color-accent-light);
+    color: var(--color-accent); /* Use accent color for inline code */
+    padding: 0.15em 0.4em;
     border-radius: var(--border-radius);
-    font-size: 0.88em;
+    font-size: 0.86em;
     white-space: pre-wrap;
     word-break: break-word;
     border: 1px solid var(--color-border-light);
   }
-  pre { /* Code blocks */
+  pre { /* Code blocks - Improvement 19 */
     font-family: var(--font-code);
-    background-color: var(--color-background-code);
+    background-color: var(--color-background-code); /* Cleaner, lighter bg */
     border: 1px solid var(--color-border-light);
-    padding: calc(var(--spacing-unit) * 1.2);
-    margin: calc(var(--spacing-unit) * 2.2) 0;
+    padding: calc(var(--spacing-unit) * 1.1);
+    margin: calc(var(--spacing-unit) * 2.0) 0;
     border-radius: var(--border-radius);
     overflow-x: auto;
-    line-height: 1.55;
-    font-size: 0.9em;
-    color: var(--color-text-primary);
+    line-height: 1.5;
+    font-size: 0.88em; /* Slightly smaller for denser code */
   }
-  pre code {
+  pre code { /* Improvement 7 */
     background-color: transparent;
     border: none;
     padding: 0;
-    font-size: 1em; /* Inherit from pre */
-    white-space: pre; /* Preserve whitespace in code blocks */
+    font-size: 1em;
+    font-weight: 500; /* Sharper text */
+    color: var(--color-text-primary); /* Good contrast on light bg */
+    white-space: pre;
   }
 
-  /* Tables - Professional, clean, and readable */
-  table {
+  /* Tables - Booktabs style */
+  table { /* Improvement 23 */
     width: 100%;
     border-collapse: collapse;
-    margin: calc(var(--spacing-unit) * 2.2) 0;
-    font-size: 0.92rem;
-    border: 1px solid var(--color-border-medium);
-    border-radius: 0; /* Sharp corners for a more formal table, or use var(--border-radius) */
+    margin: calc(var(--spacing-unit) * 2.0) 0;
+    font-size: 0.9rem;
+    border-top: 1.5px solid var(--color-text-primary); /* Thicker top border for table */
+    border-bottom: 1.5px solid var(--color-text-primary); /* Thicker bottom border for table */
   }
-  th, td {
-    border: 1px solid var(--color-border-light);
-    padding: calc(var(--spacing-unit) * 0.75) calc(var(--spacing-unit) * 1);
+  th, td { /* Improvement 15, 23 */
+    border: none; /* Remove all default cell borders */
+    padding: calc(var(--spacing-unit) * 0.9) calc(var(--spacing-unit) * 1);
     text-align: left;
     vertical-align: top;
   }
-  th {
-    background-color: #F9FAFB; /* Very light gray, almost white */
-    font-weight: 600; /* Less shouting than 700 */
-    font-family: var(--font-body); /* Consistent with body text family */
+  th { /* Improvement 28 */
+    font-weight: 600;
+    font-family: var(--font-body);
     color: var(--color-text-primary);
-    text-transform: none; /* No uppercase for a more subtle look */
-    font-size: 0.95em;
-    border-bottom: 2px solid var(--color-border-medium);
+    text-transform: none;
+    font-size: 0.92em;
+    border-bottom: 1px solid var(--color-border-medium); /* Separator for header row */
   }
-  /* Optional: Zebra striping for very long tables, otherwise keep clean */
-  /* tbody tr:nth-of-type(even) { background-color: #FDFEFF; } */
-
-  /* Specific column alignments from example */
+  /* Specific column alignments, if needed (remove if not) */
   table th:nth-child(2), table td:nth-child(2) { text-align: center; }
   table th:nth-child(3), table td:nth-child(3) { text-align: right; }
 
 
-  /* Images & Figures - Well-integrated with subtle styling */
-  img {
+  /* Images & Figures */
+  img { /* Improvement 24 */
     max-width: 100%;
     height: auto;
     display: block;
-    margin: calc(var(--spacing-unit) * 2.2) auto;
+    margin: calc(var(--spacing-unit) * 2.0) auto;
     border-radius: var(--border-radius);
-    border: 1px solid var(--color-border-light); /* Subtle border */
-    box-shadow: 0 3px 8px rgba(0,0,0,0.05); /* Softer shadow */
+    border: none; /* No border by default */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Softer, more diffuse shadow */
   }
-  figure { margin: calc(var(--spacing-unit) * 2.2) 0; padding: 0; }
-  figcaption {
+  figure { margin: calc(var(--spacing-unit) * 2.0) 0; padding: 0; }
+  figcaption { /* Improvement 9 */
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--color-text-muted);
-    margin-top: calc(var(--spacing-unit) * 0.7);
+    margin-top: calc(var(--spacing-unit) * 0.8);
     font-style: italic;
   }
 
-  /* Horizontal Rules - Minimalist separator */
-  hr {
+  /* Horizontal Rules */
+  hr { /* Improvement 14, 30 */
     border: 0;
-    height: 1px;
-    background-color: var(--color-border-medium);
-    margin: calc(var(--spacing-unit) * 3.5) 0;
+    height: 0.5px;
+    background-color: var(--color-border-light);
+    margin: calc(var(--spacing-unit) * 4) 0; /* Stronger separator */
   }
 
-  /* Details/Summary (Open by default for PDF) - Styled as an info box */
-  details {
+  /* Details/Summary */
+  details { /* Improvement 20, 29 */
     background-color: var(--color-accent-light);
-    border: 1px solid var(--color-accent);
-    border-left-width: 4px;
+    border: 1px solid var(--color-border-light); /* Lighter border overall */
+    border-left: 3px solid var(--color-accent);
     border-radius: var(--border-radius);
-    padding: calc(var(--spacing-unit) * 1.2) calc(var(--spacing-unit) * 1.5);
-    margin: calc(var(--spacing-unit) * 2) 0;
+    padding: calc(var(--spacing-unit) * 1);
+    margin: calc(var(--spacing-unit) * 1.8) 0;
   }
   details summary {
     font-weight: 700;
-    font-family: var(--font-heading); /* Use heading font for summary */
-    color: var(--color-accent);
-    padding-bottom: calc(var(--spacing-unit) * 0.6);
-    margin-bottom: calc(var(--spacing-unit) * 0.8);
-    border-bottom: 1px dashed var(--color-accent);
+    font-family: var(--font-heading);
+    color: var(--color-text-primary); /* Primary text color */
+    padding-bottom: calc(var(--spacing-unit) * 0.5);
+    margin-bottom: calc(var(--spacing-unit) * 0.7);
+    border-bottom: 1px dashed var(--color-border-medium);
     list-style: none;
     cursor: default;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
   details summary::-webkit-details-marker, details summary::marker { display: none; }
   details[open] > summary ~ * { display: block !important; }
   details p {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     text-align: left;
     hyphens: none;
-    margin-top: calc(var(--spacing-unit) * 0.8);
-    color: var(--color-text-secondary); /* Slightly darker than blockquote text */
+    margin-top: calc(var(--spacing-unit) * 0.7);
+    color: var(--color-text-secondary);
   }
 
   /* Page Footer (Puppeteer Template) */
-  .page-footer {
+  .page-footer { /* Improvement 36 */
     font-family: var(--font-body);
-    font-size: 9pt;
+    font-size: 8.5pt; /* More discreet */
     color: var(--color-text-muted);
   }
 
   /* Print-specific optimizations */
-  @media print {
+  @media print { /* Improvement 34, 35 */
     h1, h2, h3, h4, h5, h6,
     pre, blockquote, table,
     img, figure, details {
       page-break-inside: avoid;
     }
-    p, li {
+    p, li, figcaption, details p {
       orphans: 3;
       widows: 3;
     }
     a {
-      color: var(--color-accent) !important; /* Ensure link color prints */
-      border-bottom: none !important; /* Remove underlines for cleaner print unless desired */
+      color: var(--color-accent) !important;
+      border-bottom: none !important; /* Cleaner for print */
     }
   }
 `;
