@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@puppeteer/browsers':
+        specifier: ^2.10.5
+        version: 2.10.5
       marked:
         specifier: ^15.0.12
         version: 15.0.12
@@ -17,6 +20,9 @@ importers:
       puppeteer:
         specifier: ^24.9.0
         version: 24.9.0(typescript@5.8.3)
+      puppeteer-core:
+        specifier: ^24.9.0
+        version: 24.9.0
       react:
         specifier: ^19.0.0
         version: 19.1.0

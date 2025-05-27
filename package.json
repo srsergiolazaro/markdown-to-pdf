@@ -3,15 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "npx puppeteer browsers install chrome",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@puppeteer/browsers": "^2.10.5",
     "marked": "^15.0.12",
     "next": "15.3.2",
     "puppeteer": "^24.9.0",
+    "puppeteer-core": "^24.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
