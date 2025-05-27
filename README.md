@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Markdown a PDF
 
-## Getting Started
+Este es un proyecto que permite convertir documentos en formato Markdown a PDF con un diseño profesional y elegante. Utiliza Next.js y Puppeteer para realizar la conversión.
 
-First, run the development server:
+## Características
+
+- Editor de Markdown en tiempo real
+- Conversión a PDF con diseño profesional
+- Soporte para elementos Markdown comunes:
+  - Encabezados
+  - Listas ordenadas y no ordenadas
+  - Citas
+  - Código y bloques de código
+  - Tablas
+  - Imágenes
+  - Enlaces
+  - Elementos details/summary
+- Diseño optimizado para impresión
+- Numeración automática de páginas
+- Fuentes personalizadas y estilos tipográficos profesionales
+
+## Tecnologías Utilizadas
+
+- Next.js 14
+- React
+- Puppeteer
+- Marked (para el parsing de Markdown)
+- Tailwind CSS
+
+## Cómo Usar
+
+1. Clona el repositorio
+2. Instala las dependencias:
+
+```bash
+npm install
+# o
+yarn install
+```
+
+3. Inicia el servidor de desarrollo:
 
 ```bash
 npm run dev
-# or
+# o
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Abre [http://localhost:3000](http://localhost:3000) en tu navegador
+5. Escribe tu contenido en Markdown en el editor
+6. Haz clic en "Convertir a PDF" para generar el documento
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Estructura del Proyecto
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/app/page.tsx` - Interfaz de usuario principal
+- `src/app/api/markdown-to-pdf/route.ts` - API endpoint para la conversión
+- `public/` - Archivos estáticos
 
-## Learn More
+## Personalización
 
-To learn more about Next.js, take a look at the following resources:
+El estilo del PDF generado puede ser personalizado modificando los estilos CSS en `src/app/api/markdown-to-pdf/route.ts`. Los estilos incluyen:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Fuentes personalizadas (Merriweather, Open Sans, Source Code Pro)
+- Esquema de colores profesional
+- Espaciado y márgenes optimizados
+- Estilos para todos los elementos Markdown
