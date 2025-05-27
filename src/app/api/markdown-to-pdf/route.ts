@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { marked } from "marked";
-import puppeteer from "puppeteer";
-import chrome from "chrome-aws-lambda";
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium-min";
 import { NextRequest, NextResponse } from "next/server";
 
 // Estilos CSS para mejorar la apariencia del PDF
@@ -308,23 +308,19 @@ const getStyles = () => `
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    let { markdown } = body; // Cambiado a let para modificarlo
+    let { markdown } = body;
 
     if (!markdown) {
       return NextResponse.json({ error: "Missing markdown" }, { status: 400 });
     }
 
-    // --- Modificación para <details> ---
-    // Reemplazar <details> por <details open> para que esté abierto en el PDF
-    // Esto es más robusto que intentar forzarlo solo con CSS
     if (markdown && typeof markdown === "string") {
       markdown = markdown.replace(/<details>/g, "<details open>");
     }
-    // --- Fin de modificación ---
 
     marked.setOptions({
       gfm: true,
-      breaks: false, // false es generalmente mejor para párrafos bien formados.
+      breaks: false,
     });
 
     const markdownHtml = marked.parse(markdown) as string;
@@ -335,7 +331,7 @@ export async function POST(req: NextRequest) {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Documento</title> <!-- Título genérico para la pestaña del navegador, no para el PDF en sí -->
+        <title>Documento</title>
         <style>
           ${getStyles()}
         </style>
@@ -345,13 +341,14 @@ export async function POST(req: NextRequest) {
       </body>
       </html>
     `;
-    const executablePath = (await chrome.executablePath) || ""; // Obtener la ruta del ejecutable de chrome-aws-lambda
 
     const browser = await puppeteer.launch({
-      executablePath,
-      args: chrome.args,
-      headless: chrome.headless,
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: true,
     });
+
     const page = await browser.newPage();
     await page.setContent(fullHtml, { waitUntil: "networkidle0" });
 
@@ -361,11 +358,11 @@ export async function POST(req: NextRequest) {
       margin: {
         top: "18mm",
         right: "0mm",
-        bottom: "20mm", // Espacio para el pie de página
+        bottom: "20mm",
         left: "0mm",
       },
       displayHeaderFooter: true,
-      headerTemplate: "<div></div>", // Encabezado vacío para quitar fecha y título por defecto
+      headerTemplate: "<div></div>",
       footerTemplate: `
         <div style="box-sizing: border-box; width: 100%; text-align: center; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 8.5pt; color: #6c757d; padding: 0 15mm;">
           Página <span class="pageNumber"></span> de <span class="totalPages"></span>
