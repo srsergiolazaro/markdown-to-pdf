@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@puppeteer/browsers": "^2.10.5",
+    "chrome-aws-lambda": "^10.1.0",
     "marked": "^15.0.12",
     "next": "15.3.2",
     "puppeteer": "^24.9.0",

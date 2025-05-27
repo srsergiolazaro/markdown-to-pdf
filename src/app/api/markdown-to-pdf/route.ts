@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { marked } from "marked";
-import puppeteer from "puppeteer-core";
-import { getExecutablePath } from "@puppeteer/browsers";
+import puppeteer from "puppeteer";
+import chrome from "chrome-aws-lambda";
 import { NextRequest, NextResponse } from "next/server";
 
 // Estilos CSS para mejorar la apariencia del PDF
@@ -345,22 +345,12 @@ export async function POST(req: NextRequest) {
       </body>
       </html>
     `;
-    const executablePath = getExecutablePath({
-      browser: "chrome",
-      channel: "stable",
-    });
+    const executablePath = (await chrome.executablePath) || ""; // Obtener la ruta del ejecutable de chrome-aws-lambda
 
     const browser = await puppeteer.launch({
       executablePath,
-      headless: true, // o "new"
-      args: [
-        // Argumentos comunes para entornos serverless/contenedores
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage", // Importante para evitar problemas de memoria compartida
-        "--single-process", // A veces ayuda en entornos con recursos limitados
-        "--no-zygote", // A veces ayuda en entornos con recursos limitados
-      ],
+      args: chrome.args,
+      headless: chrome.headless,
     });
     const page = await browser.newPage();
     await page.setContent(fullHtml, { waitUntil: "networkidle0" });
